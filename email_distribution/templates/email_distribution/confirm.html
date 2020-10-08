@@ -569,9 +569,30 @@
         });
     </script>
     <script>
+        function get_params(){
+            var params = window
+            .location
+            .search
+            .replace('?','')
+            .split('&')
+            .reduce(
+                function(p,e){
+                    var a = e.split('=');
+                    p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
+                    return p;
+                },
+                {}
+            );
+            return params
+        }
+        var params = get_params();
+        document.getElementById('leadprofit-name').innerText = params['name']
+        document.getElementById('leadprofit-phone').innerText = params['phone']
+    </script>
+    <script>
       document.getElementById('email').addEventListener("submit", subscribe);
       function subscribe(e){
-        var email = e.target.em.value
+        var email = e.target.em.value;
         var params = window
             .location
             .search
@@ -586,9 +607,19 @@
                 {}
             );
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", 'https://nownews.cf/subscribe?email=' + email + '&geo=' + params['geo']  + '&phone=' + params['phone']  + '&name=' + params['name'], true);
 
-        xhr.send();
+        var json = JSON.stringify({
+          name: params['name'],
+          phone: params['phone'],
+          email: email,
+          geo: params['geo']
+        });
+
+        xhr.open("POST", 'http://127.0.0.1:8000/subscribe/', true);
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+        xhr.send(json);
+
         e.target.em.value = ''
       }
     </script>

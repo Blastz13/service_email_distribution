@@ -1,4 +1,6 @@
 from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .serializers import EmailSubscriberSerializers
 
@@ -9,8 +11,17 @@ from django.views import View
 from .models import EmailSubscriber, PageThankYou
 
 
-class Subscribe(CreateAPIView):
-    serializer_class = EmailSubscriberSerializers
+class Subscribe(APIView):
+    def post(self, request):
+        serializer = EmailSubscriberSerializers(data=request.data)
+        if serializer.is_valid():
+            try:
+                obj = EmailSubscriber.objects.get(phone=serializer.validated_data['phone'])
+                obj.email = serializer.validated_data['email']
+                obj.save()
+            except:
+                serializer.save()
+        return Response(status=201)
 
 
 class ListSubscribe(ListAPIView):

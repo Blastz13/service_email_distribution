@@ -42,9 +42,12 @@ INSTALLED_APPS = [
     'email_distribution.apps.EmailDistributionConfig',
 
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,10 +84,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+     'default': {
+     'ENGINE': 'django.db.backends.postgresql',
+     'NAME': 'dj',
+     'USER': 'postgresu',
+     'PASSWORD': 'postgresu',
+     'HOST': 'localhost',
+     'PORT': '5432',
+ }
 }
 
 
@@ -120,6 +127,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

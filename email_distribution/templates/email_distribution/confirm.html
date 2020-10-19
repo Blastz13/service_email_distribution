@@ -2,6 +2,7 @@
 <html lang="ru">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
     <link href='https://fonts.ksn.pw/css?family=Roboto:400,500,700,900&subset=latin,cyrillic' rel='stylesheet'
@@ -569,27 +570,6 @@
         });
     </script>
     <script>
-        function get_params(){
-            var params = window
-            .location
-            .search
-            .replace('?','')
-            .split('&')
-            .reduce(
-                function(p,e){
-                    var a = e.split('=');
-                    p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
-                    return p;
-                },
-                {}
-            );
-            return params
-        }
-        var params = get_params();
-        document.getElementById('leadprofit-name').innerText = params['name']
-        document.getElementById('leadprofit-phone').innerText = params['phone']
-    </script>
-    <script>
       document.getElementById('email').addEventListener("submit", subscribe);
       function subscribe(e){
         var email = e.target.em.value;
@@ -615,13 +595,29 @@
           geo: params['geo']
         });
 
-        xhr.open("POST", 'http://127.0.0.1:8000/subscribe/', true);
+        xhr.open("POST", 'http://127.0.0.1:8000/subscribe/', false);
         xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 
         xhr.send(json);
 
         e.target.em.value = ''
       }
+    </script>
+    <script>
+        var params = window
+            .location
+            .search
+            .replace('?','')
+            .split('&')
+            .reduce(
+                function(p,e){
+                    var a = e.split('=');
+                    p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
+                    return p;
+                },
+                {}
+            );
+        document.body.append(`<img src="https://www.facebook.com/tr?id=${params['px']}&ev=Lead&noscript=1" height="1" width="1" style=«display:none"/>`)
     </script>
     <script>
         function $_GET(key) {
@@ -640,5 +636,4 @@
         }
     </script>
 </body>
-
 </html>
